@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Advanced Task Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .auth-card { background: #ffffff; width: 100%; max-width: 400px; padding: 35px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); text-align: center; }
+        .auth-card h2 { color: #333; margin-bottom: 8px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .auth-card h2 i { color: #667eea; }
+        .subtitle { font-size: 13px; color: #777; margin-bottom: 25px; }
+        .form-group { margin-bottom: 15px; text-align: left; position: relative; }
+        .form-group label { display: block; font-size: 12px; font-weight: 500; color: #555; margin-bottom: 6px; }
+        .form-group input { width: 100%; padding: 11px 40px 11px 14px; border: 2px solid #e1e1e1; border-radius: 8px; font-size: 13px; outline: none; }
+        .form-group input:focus { border-color: #667eea; }
+        .password-toggle-icon { position: absolute; right: 14px; top: 38px; cursor: pointer; color: #777; font-size: 14px; }
+        .auth-btn { background: #667eea; color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: 500; cursor: pointer; margin-top: 10px; font-size: 14px; }
+        .auth-btn:hover { background: #5a6fd6; }
+        .flash-msg { background: #fee2e2; color: #dc2626; padding: 10px; border-radius: 6px; font-size: 12px; margin-bottom: 15px; }
+        .flash-success { background: #d1fae5; color: #065f46; padding: 10px; border-radius: 6px; font-size: 12px; margin-bottom: 15px; }
+        .auth-footer { margin-top: 20px; font-size: 13px; color: #777; }
+        .auth-footer a { color: #667eea; text-decoration: none; font-weight: 600; }
+        .auth-footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <h2><i class="fa-solid fa-list-check"></i> Welcome Back</h2>
+        <p class="subtitle">Log in to access your secure task manager</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{% if category == 'success' %}flash-success{% else %}flash-msg{% endif %}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="/login">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" placeholder="Enter your username" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                <i class="fa-solid fa-eye password-toggle-icon" id="toggleLoginPassword" onclick="togglePassword('loginPassword', 'toggleLoginPassword')"></i>
+            </div>
+            <button type="submit" class="auth-btn">Log In</button>
+        </form>
+
+        <div class="auth-footer">
+            Don't have an account? <a href="/signup">Sign up here</a>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(fieldId, iconId) {
+            const input = document.getElementById(fieldId);
+            const icon = document.getElementById(iconId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash password-toggle-icon';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-solid fa-eye password-toggle-icon';
+            }
+        }
+    </script>
+</body>
+</html>
